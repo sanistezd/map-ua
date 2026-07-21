@@ -1,0 +1,14 @@
+{
+  "extends": "@root/typescript-config/nestjs.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "drizzle.config.ts",
+    "vitest.config.mts",
+    "vitest.integration.config.mts"
+  ]
+}

@@ -1,0 +1,264 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Design system: technical drafting / blueprint.
+  A starter template is a foundation to build on — so the UI borrows the
+  vocabulary of architectural drawings: hairline rules, corner registration
+  marks, a title block, and a schematic of the app's own module graph as
+  the hero. Palette is warm drafting paper / deep blueprint navy, with a
+  single amber "signal" accent reserved for live/active states.
+*/
+
+:root {
+  /* Named palette — every functional slot below references one of these. */
+  --paper: #f5f1e8;
+  --ink: #16283a;
+  --blueprint: #2c5c8c;
+  --blueprint-soft: #c9d6de;
+  --blueprint-tint: #e3ecf1;
+  --signal: #ff7a33;
+  --graphite: #5c6b78;
+  --ok: #2e9e5b;
+  --alert: #c4432f;
+  --panel: #efe9db;
+  --panel-dim: #e7dfcd;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--panel);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--blueprint);
+  --primary-foreground: var(--paper);
+  --secondary: var(--panel-dim);
+  --secondary-foreground: var(--ink);
+  --muted: var(--panel-dim);
+  --muted-foreground: var(--graphite);
+  --accent: var(--blueprint-tint);
+  --accent-foreground: var(--ink);
+  --destructive: var(--alert);
+  --destructive-foreground: var(--paper);
+  --border: color-mix(in srgb, var(--blueprint) 24%, transparent);
+  --input: color-mix(in srgb, var(--blueprint) 30%, transparent);
+  --ring: var(--signal);
+  --radius: 0.25rem;
+}
+
+.dark {
+  --paper: #0a1420;
+  --ink: #e7eef4;
+  --ink-inverse: #071019;
+  --blueprint: #5b96cc;
+  --blueprint-soft: #24384a;
+  --blueprint-tint: #14283a;
+  --signal: #ff9257;
+  --graphite: #8ca0b3;
+  --ok: #4fc97f;
+  --alert: #e0725a;
+  --panel: #0f1d2c;
+  --panel-dim: #14283a;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--panel);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--blueprint);
+  --primary-foreground: var(--ink-inverse);
+  --secondary: var(--panel-dim);
+  --secondary-foreground: var(--ink);
+  --muted: var(--panel-dim);
+  --muted-foreground: var(--graphite);
+  --accent: var(--blueprint-tint);
+  --accent-foreground: var(--ink);
+  --destructive: var(--alert);
+  --destructive-foreground: var(--ink-inverse);
+  --border: color-mix(in srgb, var(--blueprint) 22%, transparent);
+  --input: color-mix(in srgb, var(--blueprint) 30%, transparent);
+  --ring: var(--signal);
+}
+
+@theme inline {
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-inverse: var(--ink-inverse);
+  --color-blueprint: var(--blueprint);
+  --color-blueprint-soft: var(--blueprint-soft);
+  --color-blueprint-tint: var(--blueprint-tint);
+  --color-signal: var(--signal);
+  --color-graphite: var(--graphite);
+  --color-ok: var(--ok);
+  --color-alert: var(--alert);
+  --color-panel: var(--panel);
+  --color-panel-dim: var(--panel-dim);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply min-h-screen bg-background text-foreground antialiased;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    background-image:
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  h1,
+  h2,
+  h3 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+main {
+  width: min(920px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 56px 0 96px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  color: var(--blueprint);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+h1 {
+  max-width: 720px;
+  margin: 14px 0 16px;
+  font-size: clamp(2.6rem, 7vw, 4.6rem);
+  line-height: 0.98;
+}
+
+.lede {
+  max-width: 52ch;
+  color: var(--graphite);
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+/* Drafting panel: hairline frame used for content blocks throughout. */
+.panel {
+  position: relative;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: var(--radius-lg);
+}
+
+.panel-label {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+.panel-label .tag {
+  color: var(--blueprint);
+  font-weight: 600;
+}
+
+.data-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.data-list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 0;
+  border-top: 1px solid var(--border);
+  font-size: 0.92rem;
+}
+
+/* Flex items default to min-width: auto, so unbreakable text (a long
+   file key, a nowrap span) refuses to shrink below its own content
+   width and can force the whole row — and any shared grid track it
+   sits in — wider than the viewport. Letting the first child shrink
+   is what makes `truncate` on it actually take effect. */
+.data-list li > *:first-child {
+  min-width: 0;
+}
+
+.data-list li:first-child {
+  border-top: none;
+}
+
+.data-list small {
+  color: var(--graphite);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.error {
+  color: var(--destructive);
+  font-size: 0.85rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 520px) {
+  main {
+    padding: 40px 0 64px;
+  }
+}

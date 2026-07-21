@@ -1,0 +1,41 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":dependencyDashboard", ":semanticCommits"],
+  "timezone": "UTC",
+  "schedule": ["before 6am on monday"],
+  "labels": ["dependencies"],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on monday"]
+  },
+  "packageRules": [
+    {
+      "description": "Group non-major devDependency bumps into one PR per week",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "dev dependencies (non-major)"
+    },
+    {
+      "description": "Group the Next.js ecosystem together so versions stay in sync",
+      "matchPackageNames": [
+        "next",
+        "eslint-config-next",
+        "@types/react",
+        "@types/react-dom",
+        "react",
+        "react-dom"
+      ],
+      "groupName": "next.js ecosystem"
+    },
+    {
+      "description": "Group the NestJS ecosystem together so versions stay in sync",
+      "matchPackageNames": ["/^@nestjs//"],
+      "groupName": "nestjs ecosystem"
+    },
+    {
+      "description": "Require manual approval before opening major-version PRs",
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    }
+  ]
+}

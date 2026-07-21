@@ -1,0 +1,108 @@
+{
+  "Metadata": {
+    "title": "Стартовий проєкт Nest + Next",
+    "description": "Модульний моноліт і FSD"
+  },
+  "Home": {
+    "wordmark": "Nest + Next / Стартер",
+    "eyebrow": "Стартовий шаблон Turborepo",
+    "title": "Постачайте каркас, а не шаблонний код.",
+    "description": "Модульний API на NestJS, застосунок на Next.js за Feature-Sliced Design та зв'язок між ними — намальований нижче й запущений наживо.",
+    "stackLabel": "Технології"
+  },
+  "Schematic": {
+    "label": "Карта модулів",
+    "ariaLabel": "Діаграма графа модулів застосунку. Модуль App з'єднаний з модулями Auth, Users, Health, Email і Storage. Модуль Users і спільний модуль Database з'єднані нижче ряду."
+  },
+  "Theme": {
+    "dark": "Темна",
+    "light": "Світла",
+    "switchTo": "Увімкнути {theme} тему",
+    "toggle": "Змінити тему"
+  },
+  "Locale": {
+    "label": "Мова",
+    "english": "English",
+    "ukrainian": "Українська"
+  },
+  "Users": {
+    "panelLabel": "Users · POST/GET /api/users",
+    "emailLabel": "Електронна пошта",
+    "emailPlaceholder": "you@example.com",
+    "emailInvalid": "Введіть коректну електронну адресу.",
+    "add": "Додати користувача",
+    "adding": "Додаємо…",
+    "created": "Створено {email}",
+    "empty": "Користувачів ще немає. Додайте першого.",
+    "delete": "Видалити",
+    "deleteAria": "Видалити {email}",
+    "deleteTitle": "Видалити цього користувача?",
+    "deleteDescription": "Це остаточно видалить {email}. Цю дію неможливо скасувати.",
+    "deleteConfirm": "Видалити",
+    "deleteCancel": "Скасувати",
+    "deleted": "Видалено {email}"
+  },
+  "Integrations": {
+    "panelLabel": "Перевірка інтеграцій",
+    "description": "Перевірка API healthcheck та опційних модулів пошти й сховища наживо.",
+    "health": {
+      "title": "Стан",
+      "endpoint": "GET /api/health",
+      "check": "Перевірити стан",
+      "checking": "Перевіряємо…",
+      "success": "API працює справно.",
+      "failed": "Помилка: {error}"
+    },
+    "email": {
+      "title": "Пошта",
+      "emailLabel": "Адреса отримувача",
+      "placeholder": "you@example.com",
+      "emailInvalid": "Введіть коректну електронну адресу.",
+      "send": "Надіслати тестовий лист",
+      "sending": "Надсилаємо…",
+      "notConfiguredHint": "Не налаштовано. Задайте RESEND_API_KEY або EMAIL_HOST/EMAIL_USER/EMAIL_PASS.",
+      "success": "Надіслано через {provider}.",
+      "failed": "Помилка: {error}"
+    },
+    "storage": {
+      "title": "Сховище",
+      "upload": "Завантажити тестовий файл",
+      "uploading": "Завантажуємо…",
+      "notConfiguredHint": "Не налаштовано. Задайте AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY та AWS_S3_BUCKET.",
+      "dialogDescription": "Виберіть або перетягніть файл, щоб завантажити його у ваш S3-бакет.",
+      "fileUploadTitle": "Завантажити файл",
+      "fileUploadSubtitle": "Перетягніть файл сюди або натисніть, щоб вибрати",
+      "fileUploadDropActive": "Відпустіть тут",
+      "success": "Завантажено: {key}",
+      "failed": "Помилка: {error}",
+      "filesTitle": "Завантажені файли",
+      "filesEmpty": "Файлів ще немає.",
+      "filesLoadFailed": "Не вдалося завантажити список файлів.",
+      "open": "Відкрити",
+      "delete": "Видалити",
+      "deleteTitle": "Видалити цей файл?",
+      "deleteDescription": "Це остаточно видалить {key} зі сховища. Цю дію неможливо скасувати.",
+      "deleteConfirm": "Видалити",
+      "deleteCancel": "Скасувати",
+      "deleted": "Видалено {key}",
+      "deleteFailed": "Не вдалося видалити: {error}"
+    }
+  },
+  "ApiErrors": {
+    "common": {
+      "badRequest": "Запит містить помилку.",
+      "validationFailed": "Перевірте введені дані.",
+      "notFound": "Запитаний ресурс не знайдено.",
+      "conflict": "Цю дію неможливо виконати через наявні дані.",
+      "tooManyRequests": "Забагато запитів. Спробуйте пізніше.",
+      "internal": "Щось пішло не так. Спробуйте ще раз.",
+      "unavailable": "Сервіс тимчасово недоступний. Спробуйте пізніше."
+    },
+    "user": {
+      "emailTaken": "Користувач із такою електронною адресою вже існує."
+    },
+    "auth": {
+      "unauthorized": "Увійдіть, щоб продовжити."
+    }
+  }
+}

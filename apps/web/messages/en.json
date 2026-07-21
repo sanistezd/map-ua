@@ -1,0 +1,108 @@
+{
+  "Metadata": {
+    "title": "Nest + Next Starter",
+    "description": "Modular monolith and FSD starter"
+  },
+  "Home": {
+    "wordmark": "Nest + Next / Starter",
+    "eyebrow": "Turborepo starter template",
+    "title": "Ship the scaffolding, not the boilerplate.",
+    "description": "A modular NestJS API, a Feature-Sliced Next.js app, and the plumbing between them — drawn out below, and running live.",
+    "stackLabel": "Built with"
+  },
+  "Schematic": {
+    "label": "Module map",
+    "ariaLabel": "Diagram of the application's module graph. The App module connects to Auth, Users, Health, Email, and Storage modules. The Users module and the shared Database module are connected below the row."
+  },
+  "Theme": {
+    "dark": "Dark",
+    "light": "Light",
+    "switchTo": "Switch to {theme} mode",
+    "toggle": "Toggle color theme"
+  },
+  "Locale": {
+    "label": "Language",
+    "english": "English",
+    "ukrainian": "Українська"
+  },
+  "Users": {
+    "panelLabel": "Users · POST/GET /api/users",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "emailInvalid": "Enter a valid email address.",
+    "add": "Add user",
+    "adding": "Adding…",
+    "created": "Created {email}",
+    "empty": "No users yet. Create the first one.",
+    "delete": "Delete",
+    "deleteAria": "Delete {email}",
+    "deleteTitle": "Delete this user?",
+    "deleteDescription": "This will permanently delete {email}. This action cannot be undone.",
+    "deleteConfirm": "Delete",
+    "deleteCancel": "Cancel",
+    "deleted": "Deleted {email}"
+  },
+  "Integrations": {
+    "panelLabel": "Integration checks",
+    "description": "Live checks against the API's health endpoint and the optional email and storage modules.",
+    "health": {
+      "title": "Health",
+      "endpoint": "GET /api/health",
+      "check": "Check health",
+      "checking": "Checking…",
+      "success": "API is healthy.",
+      "failed": "Failed: {error}"
+    },
+    "email": {
+      "title": "Email",
+      "emailLabel": "Recipient email",
+      "placeholder": "you@example.com",
+      "emailInvalid": "Enter a valid email address.",
+      "send": "Send test email",
+      "sending": "Sending…",
+      "notConfiguredHint": "Not configured. Set RESEND_API_KEY or EMAIL_HOST/EMAIL_USER/EMAIL_PASS.",
+      "success": "Sent via {provider}.",
+      "failed": "Failed: {error}"
+    },
+    "storage": {
+      "title": "Storage",
+      "upload": "Upload test file",
+      "uploading": "Uploading…",
+      "notConfiguredHint": "Not configured. Set AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_S3_BUCKET.",
+      "dialogDescription": "Pick or drop a file to upload it to your configured S3 bucket.",
+      "fileUploadTitle": "Upload file",
+      "fileUploadSubtitle": "Drag or drop your file here or click to upload",
+      "fileUploadDropActive": "Drop it",
+      "success": "Uploaded: {key}",
+      "failed": "Failed: {error}",
+      "filesTitle": "Uploaded files",
+      "filesEmpty": "No files uploaded yet.",
+      "filesLoadFailed": "Could not load files.",
+      "open": "Open",
+      "delete": "Delete",
+      "deleteTitle": "Delete this file?",
+      "deleteDescription": "This will permanently delete {key} from storage. This action cannot be undone.",
+      "deleteConfirm": "Delete",
+      "deleteCancel": "Cancel",
+      "deleted": "Deleted {key}",
+      "deleteFailed": "Failed to delete: {error}"
+    }
+  },
+  "ApiErrors": {
+    "common": {
+      "badRequest": "The request is invalid.",
+      "validationFailed": "Please check the entered information.",
+      "notFound": "The requested resource was not found.",
+      "conflict": "This operation conflicts with existing data.",
+      "tooManyRequests": "Too many requests. Please try again later.",
+      "internal": "Something went wrong. Please try again.",
+      "unavailable": "The service is currently unavailable. Please try again later."
+    },
+    "user": {
+      "emailTaken": "A user with this email already exists."
+    },
+    "auth": {
+      "unauthorized": "Please sign in to continue."
+    }
+  }
+}
