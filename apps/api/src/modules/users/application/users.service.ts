@@ -10,8 +10,22 @@ export class UsersService {
 
   async create(email: string): Promise<User> {
     const user = await this.users.create(email);
-    await this.welcomeEmail.enqueue(user.email);
+    if (user.email) {
+      await this.welcomeEmail.enqueue(user.email);
+    }
     return user;
+  }
+
+  async upsertFromAuth(id: string, email: string | null, isAnonymous: boolean): Promise<User> {
+    return this.users.upsertFromAuth(id, email, isAnonymous);
+  }
+
+  async findById(id: string): Promise<User | null> {
+    return this.users.findById(id);
+  }
+
+  async update(id: string, data: Partial<User>): Promise<User | null> {
+    return this.users.update(id, data);
   }
 
   findAll(): Promise<User[]> {

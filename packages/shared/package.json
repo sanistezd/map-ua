@@ -4,16 +4,17 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./api-error": "./src/api-error/codes.ts",
-    "./auth": "./src/auth/index.ts",
-    "./user": "./src/user/index.ts",
-    "./health": "./src/health/index.ts",
-    "./email": "./src/email/index.ts",
-    "./storage": "./src/storage/index.ts"
+    ".": "./dist/index.js",
+    "./api-error": "./dist/api-error/codes.js",
+    "./auth": "./dist/auth/index.js",
+    "./user": "./dist/user/index.js",
+    "./health": "./dist/health/index.js",
+    "./email": "./dist/email/index.js",
+    "./storage": "./dist/storage/index.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "dev": "tsc -w -p tsconfig.json",
     "lint": "tsc -p tsconfig.json --noEmit",
     "lint:fix": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run --passWithNoTests",

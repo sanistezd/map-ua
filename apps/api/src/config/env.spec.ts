@@ -12,6 +12,7 @@ describe('validateEnv', () => {
     expect(env.PORT).toBe(4000);
     expect(env.WEB_URL).toBe('http://localhost:3000');
     expect(env.REDIS_URL).toBe('redis://localhost:6379');
+    expect(env.SUPABASE_URL).toBeUndefined();
     expect(env.THROTTLE_TTL_MS).toBe(60_000);
     expect(env.THROTTLE_LIMIT).toBe(100);
     expect(env.RESEND_API_KEY).toBeUndefined();

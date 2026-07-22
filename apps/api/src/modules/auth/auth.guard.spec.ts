@@ -16,15 +16,26 @@ function createContext(authorization?: string): {
   };
   const context = {
     switchToHttp: () => ({ getRequest: () => request }),
+    getHandler: vi.fn(),
+    getClass: vi.fn(),
   } as unknown as ExecutionContext;
   return { context, request };
 }
 
 describe('AuthGuard', () => {
+  let verifier: AuthVerifier;
+  let reflector: Reflector;
+
+  beforeEach(() => {
+    verifier = { verifyBearerToken: vi.fn() };
+    reflector = {
+      getAllAndOverride: vi.fn().mockReturnValue(false),
+    } as unknown as Reflector;
+  });
+
   it('rejects requests without an Authorization header', async () => {
-    const verifier: AuthVerifier = { verifyBearerToken: vi.fn() };
     const { context } = createContext(undefined);
-    const guard = new AuthGuard(verifier);
+    const guard = new AuthGuard(verifier, reflector);
 
     await expect(guard.canActivate(context)).rejects.toBeInstanceOf(
       UnauthorizedException,

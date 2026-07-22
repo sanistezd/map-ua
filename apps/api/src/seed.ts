@@ -2,7 +2,8 @@ import { config } from 'dotenv';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 
-import { users } from './modules/users/infrastructure/persistence/users.schema';
+import { schema } from '@root/db';
+const users = schema.profiles;
 
 config({ path: '../../env/api.local.env' });
 
@@ -16,7 +17,7 @@ const database = drizzle(sql);
 async function seed() {
   await database
     .insert(users)
-    .values({ email: 'starter@example.com' })
+    .values({ id: '00000000-0000-0000-0000-000000000000', email: 'starter@example.com' })
     .onConflictDoNothing();
   await sql.end();
 }

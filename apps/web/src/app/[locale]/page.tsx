@@ -5,6 +5,7 @@ import { ThemeToggle } from '@/features/toggle-theme';
 import { ArchitectureSchematic } from '@/widgets/architecture-schematic';
 import { IntegrationTestsPanel } from '@/widgets/integration-tests';
 import { UsersDashboard } from '@/widgets/users-dashboard';
+import { UpgradeBanner } from '@/shared/ui/upgrade-banner';
 
 const STACK = [
   'Next.js 16',
@@ -41,6 +42,10 @@ export default async function HomePage({ params }: HomePageProps) {
         <h1>{t('title')}</h1>
         <p className="lede">{t('description')}</p>
       </header>
+
+      <div className="mt-8">
+        <UpgradeBanner />
+      </div>
 
       <div className="mt-10">
         <ArchitectureSchematic />
