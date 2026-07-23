@@ -1,5 +1,12 @@
 export { Button, buttonVariants } from './button';
-export { Card, CardContent } from './card';
+export {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from './card';
 export { ConfirmDialog } from './confirm-dialog';
 export { CornerTicks } from './corner-ticks';
 export {

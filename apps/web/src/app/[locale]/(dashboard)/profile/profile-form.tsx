@@ -1,6 +1,6 @@
-/* eslint-disable no-restricted-imports */
 'use client';
 
+/* eslint-disable no-restricted-imports */
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -76,6 +76,10 @@ export function ProfileForm() {
       return;
     }
     const file = files[0];
+
+    if (!file) {
+      return;
+    }
 
     setIsUploading(true);
     try {

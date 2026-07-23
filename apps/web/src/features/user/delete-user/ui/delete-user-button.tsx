@@ -26,7 +26,7 @@ export function DeleteUserButton({
     try {
       await userApi.remove(user.id);
       onDeleted();
-      toast.success(t('deleted', { email: user.email }));
+      toast.success(t('deleted', { email: user.email || 'Unknown' }));
     } catch (caught) {
       toast.error(
         tError(
@@ -48,13 +48,13 @@ export function DeleteUserButton({
           variant="ghost"
           size="sm"
           disabled={pending}
-          aria-label={t('deleteAria', { email: user.email })}
+          aria-label={t('deleteAria', { email: user.email || 'Unknown' })}
         >
           {t('delete')}
         </Button>
       }
       title={t('deleteTitle')}
-      description={t('deleteDescription', { email: user.email })}
+      description={t('deleteDescription', { email: user.email || 'Unknown' })}
       confirmLabel={t('deleteConfirm')}
       cancelLabel={t('deleteCancel')}
       onConfirm={() => void handleConfirm()}
