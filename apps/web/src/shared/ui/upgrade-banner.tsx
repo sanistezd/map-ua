@@ -1,5 +1,6 @@
-/* eslint-disable no-restricted-imports */
 'use client';
+
+/* eslint-disable no-restricted-imports */
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';

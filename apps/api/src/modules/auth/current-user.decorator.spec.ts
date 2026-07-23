@@ -12,7 +12,7 @@ function createContext(user: AuthUser): ExecutionContext {
 
 describe('getCurrentUser', () => {
   it('extracts the user attached to the request by the auth guard', () => {
-    const user: AuthUser = { id: '1', email: 'a@b.com' };
+    const user: AuthUser = { id: '1', email: 'a@b.com', isAnonymous: false };
     const context = createContext(user);
 
     expect(getCurrentUser(undefined, context)).toBe(user);

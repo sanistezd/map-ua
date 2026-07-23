@@ -71,7 +71,7 @@ describe('AuthGuard', () => {
   });
 
   it('attaches the verified user to the request and allows it through', async () => {
-    const user: AuthUser = { id: '1', email: 'a@b.com' };
+    const user: AuthUser = { id: '1', email: 'a@b.com', isAnonymous: false };
     const verifierMock: AuthVerifier = {
       verifyBearerToken: vi.fn().mockResolvedValue(user),
     };

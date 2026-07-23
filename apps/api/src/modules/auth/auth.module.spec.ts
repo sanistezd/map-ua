@@ -8,7 +8,7 @@ import { AuthGuard } from './auth.guard';
 import { AuthModule } from './auth.module';
 import type { AuthUser } from './auth-user';
 import type { AuthVerifier } from './auth-verifier';
-import { DisabledAuthVerifier } from './disabled-auth.verifier';
+import { SupabaseAuthVerifier } from './supabase-auth.verifier';
 
 @Injectable()
 class FakeVerifier implements AuthVerifier {
@@ -28,13 +28,13 @@ function findVerifierProvider(providers: Provider[]) {
 }
 
 describe('AuthModule.register', () => {
-  it('defaults to DisabledAuthVerifier when no verifier is given', () => {
+  it('defaults to SupabaseAuthVerifier when no verifier is given', () => {
     const module = AuthModule.register();
 
     expect(module.controllers).toEqual([AuthController]);
     expect(module.exports).toEqual([AUTH_VERIFIER, AuthGuard]);
     const verifierProvider = findVerifierProvider(module.providers ?? []);
-    expect(verifierProvider?.useClass).toBe(DisabledAuthVerifier);
+    expect(verifierProvider?.useClass).toBe(SupabaseAuthVerifier);
   });
 
   it('uses the provided verifier class when given one', () => {
