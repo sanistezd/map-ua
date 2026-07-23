@@ -1,11 +1,12 @@
+/* eslint-disable no-restricted-imports */
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { LocaleSwitcher } from '@/features/switch-locale';
 import { ThemeToggle } from '@/features/toggle-theme';
+import { UpgradeBanner } from '@/shared/ui/upgrade-banner';
 import { ArchitectureSchematic } from '@/widgets/architecture-schematic';
 import { IntegrationTestsPanel } from '@/widgets/integration-tests';
 import { UsersDashboard } from '@/widgets/users-dashboard';
-import { UpgradeBanner } from '@/shared/ui/upgrade-banner';
 
 const STACK = [
   'Next.js 16',

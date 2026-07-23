@@ -1,13 +1,22 @@
-'use client';
+import Link from 'next/link';
+('use client');
 
 import { useState } from 'react';
 import { toast } from 'sonner';
 
+// eslint-disable-next-line no-restricted-imports
 import { createClient } from '@/shared/api/supabase/client';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Field, FieldContent, FieldLabel } from '@/shared/ui/field';
-import { Input } from '@/shared/ui/input';
+import { Button } from '@/shared/ui';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/shared/ui';
+import { Field, FieldContent, FieldLabel } from '@/shared/ui';
+import { Input } from '@/shared/ui';
 
 export function ForgotPasswordForm() {
   const supabase = createClient();
@@ -21,10 +30,12 @@ export function ForgotPasswordForm() {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${location.origin}/reset-password`,
       });
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
       toast.success('Password reset email sent! Please check your inbox.');
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to send reset email');
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Failed to send reset email');
     } finally {
       setIsLoading(false);
     }
@@ -34,7 +45,9 @@ export function ForgotPasswordForm() {
     <Card className="w-full">
       <CardHeader>
         <CardTitle>Reset Password</CardTitle>
-        <CardDescription>Enter your email to receive a password reset link.</CardDescription>
+        <CardDescription>
+          Enter your email to receive a password reset link.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleReset} className="space-y-4">
@@ -58,10 +71,7 @@ export function ForgotPasswordForm() {
       </CardContent>
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          Remember your password?{' '}
-          <a href="/login" className="text-primary hover:underline">
-            Sign in
-          </a>
+          Remember your password? <Link href=""></Link>
         </p>
       </CardFooter>
     </Card>

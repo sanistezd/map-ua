@@ -1,14 +1,23 @@
-'use client';
+/* eslint-disable no-restricted-imports */
+import Link from 'next/link';
+('use client');
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { createClient } from '@/shared/api/supabase/client';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Field, FieldContent, FieldLabel } from '@/shared/ui/field';
-import { Input } from '@/shared/ui/input';
+import { Button } from '@/shared/ui';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/shared/ui';
+import { Field, FieldContent, FieldLabel } from '@/shared/ui';
+import { Input } from '@/shared/ui';
 
 export function RegisterForm() {
   const router = useRouter();
@@ -25,11 +34,15 @@ export function RegisterForm() {
         email,
         password,
       });
-      if (error) throw error;
-      toast.success('Registration successful! Please check your email to verify your account.');
+      if (error) {
+        throw error;
+      }
+      toast.success(
+        'Registration successful! Please check your email to verify your account.',
+      );
       router.push('/login');
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to register');
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Failed to register');
     } finally {
       setIsLoading(false);
     }
@@ -44,9 +57,11 @@ export function RegisterForm() {
           redirectTo: `${location.origin}/api/auth/callback?next=/profile`,
         },
       });
-      if (error) throw error;
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to login with Google');
+      if (error) {
+        throw error;
+      }
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Failed to login with Google');
       setIsLoading(false);
     }
   };
@@ -55,11 +70,13 @@ export function RegisterForm() {
     setIsLoading(true);
     try {
       const { error } = await supabase.auth.signInAnonymously();
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
       router.push('/profile');
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to login anonymously');
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Failed to login anonymously');
       setIsLoading(false);
     }
   };
@@ -68,7 +85,9 @@ export function RegisterForm() {
     <Card className="w-full">
       <CardHeader>
         <CardTitle>Create an account</CardTitle>
-        <CardDescription>Enter your email below to create your account.</CardDescription>
+        <CardDescription>
+          Enter your email below to create your account.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleEmailRegister} className="space-y-4">
@@ -114,20 +133,28 @@ export function RegisterForm() {
         </div>
 
         <div className="flex flex-col gap-2">
-          <Button variant="outline" type="button" onClick={handleGoogleLogin} disabled={isLoading}>
+          <Button
+            variant="outline"
+            type="button"
+            onClick={handleGoogleLogin}
+            disabled={isLoading}
+          >
             Google
           </Button>
-          <Button variant="outline" type="button" onClick={handleAnonymousLogin} disabled={isLoading} className="w-full">
+          <Button
+            variant="outline"
+            type="button"
+            onClick={handleAnonymousLogin}
+            disabled={isLoading}
+            className="w-full"
+          >
             Continue Anonymously
           </Button>
         </div>
       </CardContent>
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          Already have an account?{' '}
-          <a href="/login" className="text-primary hover:underline">
-            Sign in
-          </a>
+          Already have an account? <Link href=""></Link>
         </p>
       </CardFooter>
     </Card>

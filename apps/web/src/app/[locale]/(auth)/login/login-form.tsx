@@ -1,14 +1,23 @@
-'use client';
+/* eslint-disable no-restricted-imports */
+import Link from 'next/link';
+('use client');
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { createClient } from '@/shared/api/supabase/client';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Field, FieldContent, FieldError, FieldLabel } from '@/shared/ui/field';
-import { Input } from '@/shared/ui/input';
+import { Button } from '@/shared/ui';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/shared/ui';
+import { Field, FieldContent, FieldLabel } from '@/shared/ui';
+import { Input } from '@/shared/ui';
 
 export function LoginForm() {
   const router = useRouter();
@@ -25,11 +34,13 @@ export function LoginForm() {
         email,
         password,
       });
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
       router.push('/profile');
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to login');
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Failed to login');
     } finally {
       setIsLoading(false);
     }
@@ -44,9 +55,11 @@ export function LoginForm() {
           redirectTo: `${location.origin}/api/auth/callback?next=/profile`,
         },
       });
-      if (error) throw error;
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to login with Google');
+      if (error) {
+        throw error;
+      }
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Failed to login with Google');
       setIsLoading(false);
     }
   };
@@ -55,11 +68,13 @@ export function LoginForm() {
     setIsLoading(true);
     try {
       const { error } = await supabase.auth.signInAnonymously();
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
       router.push('/profile');
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to login anonymously');
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Failed to login anonymously');
       setIsLoading(false);
     }
   };
@@ -68,7 +83,9 @@ export function LoginForm() {
     <Card className="w-full">
       <CardHeader>
         <CardTitle>Login</CardTitle>
-        <CardDescription>Enter your email to sign in to your account.</CardDescription>
+        <CardDescription>
+          Enter your email to sign in to your account.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleEmailLogin} className="space-y-4">
@@ -88,9 +105,7 @@ export function LoginForm() {
           <Field>
             <div className="flex items-center justify-between">
               <FieldLabel>Password</FieldLabel>
-              <a href="/forgot-password" className="text-sm text-primary hover:underline">
-                Forgot password?
-              </a>
+              <Link href=""></Link>
             </div>
             <FieldContent>
               <Input
@@ -119,20 +134,28 @@ export function LoginForm() {
         </div>
 
         <div className="flex flex-col gap-2">
-          <Button variant="outline" type="button" onClick={handleGoogleLogin} disabled={isLoading}>
+          <Button
+            variant="outline"
+            type="button"
+            onClick={handleGoogleLogin}
+            disabled={isLoading}
+          >
             Google
           </Button>
-          <Button variant="outline" type="button" onClick={handleAnonymousLogin} disabled={isLoading} className="w-full">
+          <Button
+            variant="outline"
+            type="button"
+            onClick={handleAnonymousLogin}
+            disabled={isLoading}
+            className="w-full"
+          >
             Continue Anonymously
           </Button>
         </div>
       </CardContent>
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          Don't have an account?{' '}
-          <a href="/register" className="text-primary hover:underline">
-            Sign up
-          </a>
+          Don&apos;t have an account? <Link href=""></Link>
         </p>
       </CardFooter>
     </Card>

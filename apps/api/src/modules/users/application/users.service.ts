@@ -16,7 +16,11 @@ export class UsersService {
     return user;
   }
 
-  async upsertFromAuth(id: string, email: string | null, isAnonymous: boolean): Promise<User> {
+  async upsertFromAuth(
+    id: string,
+    email: string | null,
+    isAnonymous: boolean,
+  ): Promise<User> {
     return this.users.upsertFromAuth(id, email, isAnonymous);
   }
 

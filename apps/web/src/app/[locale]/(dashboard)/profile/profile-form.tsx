@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-imports */
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -6,7 +7,13 @@ import { toast } from 'sonner';
 import { apiRequest } from '@/shared/api/client';
 import { createClient } from '@/shared/api/supabase/client';
 import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/shared/ui/card';
 import { Field, FieldContent, FieldLabel } from '@/shared/ui/field';
 import { FileUpload } from '@/shared/ui/file-upload';
 import { Input } from '@/shared/ui/input';
@@ -15,31 +22,38 @@ export function ProfileForm() {
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  
+
   const [userId, setUserId] = useState<string>('');
   const [email, setEmail] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
 
-  useEffect(() => {
-    loadProfile();
-  }, []);
-
   const loadProfile = async () => {
     try {
-      const user = await apiRequest<any>('/users/me');
-      setUserId(user.id);
-      setEmail(user.email || '');
-      setDisplayName(user.displayName || '');
-      setAvatarUrl(user.avatarUrl || '');
-    } catch (error: any) {
-      if (error?.code === 'auth.unauthorized') {
+      const user = (await apiRequest<unknown>('/users/me')) as Record<
+        string,
+        unknown
+      >;
+      setUserId(user.id as string);
+      setEmail((user.email as string) || '');
+      setDisplayName((user.displayName as string) || '');
+      setAvatarUrl((user.avatarUrl as string) || '');
+    } catch (error: unknown) {
+      if ((error as Record<string, unknown>)?.code === 'auth.unauthorized') {
         window.location.href = '/login';
       } else {
-        console.warn('Failed to load profile:', error?.message || 'Unknown error');
+        console.warn(
+          'Failed to load profile:',
+          (error as Error)?.message || 'Unknown error',
+        );
       }
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void loadProfile();
+  }, []);
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,38 +64,40 @@ export function ProfileForm() {
         body: JSON.stringify({ displayName, avatarUrl }),
       });
       toast.success('Profile updated successfully');
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to update profile');
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Failed to update profile');
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleAvatarUpload = async (files: File[]) => {
-    if (!files.length) return;
+    if (!files.length) {
+      return;
+    }
     const file = files[0];
-    
+
     setIsUploading(true);
     try {
       const fileExt = file.name.split('.').pop();
       const filePath = `${userId}-${Math.random()}.${fileExt}`;
-      
+
       const { error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(filePath, file);
-        
+
       if (uploadError) {
         throw uploadError;
       }
-      
-      const { data } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(filePath);
-        
+
+      const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
+
       setAvatarUrl(data.publicUrl);
-      toast.success('Avatar uploaded successfully. Remember to save your profile.');
-    } catch (error: any) {
-      toast.error(error.message || 'Error uploading avatar');
+      toast.success(
+        'Avatar uploaded successfully. Remember to save your profile.',
+      );
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Error uploading avatar');
     } finally {
       setIsUploading(false);
     }
@@ -91,7 +107,9 @@ export function ProfileForm() {
     <Card className="w-full">
       <CardHeader>
         <CardTitle>Basic Information</CardTitle>
-        <CardDescription>Update your profile information and avatar.</CardDescription>
+        <CardDescription>
+          Update your profile information and avatar.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleUpdate} className="space-y-6">
@@ -117,7 +135,11 @@ export function ProfileForm() {
             <FieldContent>
               {avatarUrl && (
                 <div className="mb-4">
-                  <img src={avatarUrl} alt="Avatar" className="w-24 h-24 rounded-full object-cover border" />
+                  <img
+                    src={avatarUrl}
+                    alt="Avatar"
+                    className="w-24 h-24 rounded-full object-cover border"
+                  />
                 </div>
               )}
               <FileUpload

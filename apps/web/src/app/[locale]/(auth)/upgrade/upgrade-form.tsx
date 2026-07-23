@@ -4,11 +4,18 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
+// eslint-disable-next-line no-restricted-imports
 import { createClient } from '@/shared/api/supabase/client';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Field, FieldContent, FieldLabel } from '@/shared/ui/field';
-import { Input } from '@/shared/ui/input';
+import { Button } from '@/shared/ui';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/shared/ui';
+import { Field, FieldContent, FieldLabel } from '@/shared/ui';
+import { Input } from '@/shared/ui';
 
 export function UpgradeForm() {
   const router = useRouter();
@@ -26,12 +33,14 @@ export function UpgradeForm() {
         email,
         password,
       });
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
       toast.success('Account upgraded successfully! Please verify your email.');
       router.push('/');
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to upgrade account');
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Failed to upgrade account');
     } finally {
       setIsLoading(false);
     }
@@ -41,7 +50,10 @@ export function UpgradeForm() {
     <Card className="w-full">
       <CardHeader>
         <CardTitle>Upgrade Account</CardTitle>
-        <CardDescription>Upgrade your anonymous session to a full account to save your progress.</CardDescription>
+        <CardDescription>
+          Upgrade your anonymous session to a full account to save your
+          progress.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleUpgrade} className="space-y-4">

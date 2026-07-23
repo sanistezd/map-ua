@@ -16,9 +16,9 @@ import {
 import { API_ERROR_CODES } from '@root/shared/api-error';
 import type { UserDto } from '@root/shared/user';
 
+import { AuthGuard } from '../../auth/auth.guard';
 import type { AuthUser } from '../../auth/auth-user';
 import { CurrentUser } from '../../auth/current-user.decorator';
-import { AuthGuard } from '../../auth/auth.guard';
 import { UsersService } from '../application/users.service';
 import type { User } from '../domain/user';
 import { UserEmailTakenError } from '../domain/user-email-taken.error';

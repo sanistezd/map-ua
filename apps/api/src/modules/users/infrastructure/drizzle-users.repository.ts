@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { schema } from '@root/db';
 import { desc, eq } from 'drizzle-orm';
 
 import { DATABASE } from '@/database/database.constants';
@@ -8,7 +9,6 @@ import type { User } from '../domain/user';
 import { UserEmailTakenError } from '../domain/user-email-taken.error';
 import { UserNotFoundError } from '../domain/user-not-found.error';
 import type { UsersRepository } from '../domain/users.repository';
-import { schema } from '@root/db';
 const users = schema.profiles;
 
 const POSTGRES_UNIQUE_VIOLATION = '23505';
@@ -62,7 +62,11 @@ export class DrizzleUsersRepository implements UsersRepository {
     }
   }
 
-  async upsertFromAuth(id: string, email: string | null, isAnonymous: boolean): Promise<User> {
+  async upsertFromAuth(
+    id: string,
+    email: string | null,
+    isAnonymous: boolean,
+  ): Promise<User> {
     try {
       const [user] = await this.db
         .insert(users)

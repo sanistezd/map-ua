@@ -1,4 +1,6 @@
+/* eslint-disable no-restricted-imports */
 import { NextResponse } from 'next/server';
+
 import { createClient } from '@/shared/api/supabase/server';
 
 export async function GET(request: Request) {

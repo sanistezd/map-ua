@@ -31,3 +31,4 @@ export { Input } from './input';
 export { Label } from './label';
 export { Separator } from './separator';
 export { Toaster } from './sonner';
+export { UpgradeBanner } from './upgrade-banner';

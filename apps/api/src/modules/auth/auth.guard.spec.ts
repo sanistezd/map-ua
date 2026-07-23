@@ -1,7 +1,8 @@
 import type { ExecutionContext } from '@nestjs/common';
 import { UnauthorizedException } from '@nestjs/common';
+import type { Reflector } from '@nestjs/core';
 import type { Request } from 'express';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AuthGuard } from './auth.guard';
 import type { AuthUser } from './auth-user';
@@ -44,38 +45,38 @@ describe('AuthGuard', () => {
   });
 
   it('rejects a malformed Authorization header', async () => {
-    const verifier: AuthVerifier = { verifyBearerToken: vi.fn() };
+    const verifierMock: AuthVerifier = { verifyBearerToken: vi.fn() };
     const { context } = createContext('Basic somecreds');
-    const guard = new AuthGuard(verifier);
+    const guard = new AuthGuard(verifierMock, reflector);
 
     await expect(guard.canActivate(context)).rejects.toBeInstanceOf(
       UnauthorizedException,
     );
-    expect(verifier.verifyBearerToken).not.toHaveBeenCalled();
+    expect(verifierMock.verifyBearerToken).not.toHaveBeenCalled();
   });
 
   it('rejects a bearer token the verifier does not recognize', async () => {
-    const verifier: AuthVerifier = {
+    const verifierMock: AuthVerifier = {
       verifyBearerToken: vi.fn().mockResolvedValue(null),
     };
     const { context } = createContext('Bearer bad-token');
-    const guard = new AuthGuard(verifier);
+    const guard = new AuthGuard(verifierMock, reflector);
 
     await expect(guard.canActivate(context)).rejects.toBeInstanceOf(
       UnauthorizedException,
     );
-    expect(verifier.verifyBearerToken).toHaveBeenCalledExactlyOnceWith(
+    expect(verifierMock.verifyBearerToken).toHaveBeenCalledExactlyOnceWith(
       'bad-token',
     );
   });
 
   it('attaches the verified user to the request and allows it through', async () => {
     const user: AuthUser = { id: '1', email: 'a@b.com' };
-    const verifier: AuthVerifier = {
+    const verifierMock: AuthVerifier = {
       verifyBearerToken: vi.fn().mockResolvedValue(user),
     };
     const { context, request } = createContext('Bearer good-token');
-    const guard = new AuthGuard(verifier);
+    const guard = new AuthGuard(verifierMock, reflector);
 
     await expect(guard.canActivate(context)).resolves.toBe(true);
     expect(request.user).toEqual(user);

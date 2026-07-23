@@ -4,11 +4,18 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
+// eslint-disable-next-line no-restricted-imports
 import { createClient } from '@/shared/api/supabase/client';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Field, FieldContent, FieldLabel } from '@/shared/ui/field';
-import { Input } from '@/shared/ui/input';
+import { Button } from '@/shared/ui';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/shared/ui';
+import { Field, FieldContent, FieldLabel } from '@/shared/ui';
+import { Input } from '@/shared/ui';
 
 export function ResetPasswordForm() {
   const router = useRouter();
@@ -23,11 +30,13 @@ export function ResetPasswordForm() {
       const { error } = await supabase.auth.updateUser({
         password,
       });
-      if (error) throw error;
-      toast.success('Password updated successfully!');
-      router.push('/');
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to update password');
+      if (error) {
+        throw error;
+      }
+      toast.success('Password has been reset successfully. You can now login.');
+      router.push('/login');
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Failed to reset password');
     } finally {
       setIsLoading(false);
     }

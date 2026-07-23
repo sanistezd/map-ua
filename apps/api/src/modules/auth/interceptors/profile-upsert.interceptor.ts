@@ -15,7 +15,10 @@ import type { AuthUser } from '../auth-user';
 export class ProfileUpsertInterceptor implements NestInterceptor {
   constructor(private readonly usersService: UsersService) {}
 
-  async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
+  async intercept(
+    context: ExecutionContext,
+    next: CallHandler,
+  ): Promise<Observable<unknown>> {
     const request = context
       .switchToHttp()
       .getRequest<Request & { user?: AuthUser }>();
