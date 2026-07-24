@@ -22,6 +22,7 @@ const schema = z.object({
   REDIS_URL: z.string().url().default('redis://localhost:6379'),
   SUPABASE_URL: z.string().url(),
   SUPABASE_ANON_KEY: z.string(),
+  SUPABASE_SERVICE_ROLE_KEY: optional(z.string()),
 
   // Global rate limit (Nest ThrottlerGuard). Defaults: 100 requests / 60s.
   THROTTLE_TTL_MS: z.coerce.number().int().positive().default(60_000),

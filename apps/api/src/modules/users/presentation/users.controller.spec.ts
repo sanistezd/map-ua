@@ -1,6 +1,8 @@
 import { ConflictException, NotFoundException } from '@nestjs/common';
+import type { ConfigService } from '@nestjs/config';
 import { describe, expect, it, vi } from 'vitest';
 
+import type { StorageService } from '../../storage/storage.service';
 import type { UsersService } from '../application/users.service';
 import { UserEmailTakenError } from '../domain/user-email-taken.error';
 import { UserNotFoundError } from '../domain/user-not-found.error';
@@ -14,6 +16,15 @@ function createUsers(): UsersService {
   } as unknown as UsersService;
 }
 
+function createConfig(): ConfigService {
+  return { get: vi.fn() } as unknown as ConfigService;
+}
+
+function createStorage(): StorageService {
+  return {
+    isConfigured: vi.fn().mockReturnValue(false),
+  } as unknown as StorageService;
+}
 describe('UsersController', () => {
   it('delegates findAll to the service', async () => {
     const users = createUsers();
@@ -24,7 +35,11 @@ describe('UsersController', () => {
         createdAt: new Date('2026-01-01T00:00:00.000Z'),
       },
     ]);
-    const controller = new UsersController(users);
+    const controller = new UsersController(
+      users,
+      createConfig(),
+      createStorage(),
+    );
 
     await expect(controller.findAll()).resolves.toEqual([
       {
@@ -44,7 +59,11 @@ describe('UsersController', () => {
       createdAt: new Date('2026-01-01T00:00:00.000Z'),
     };
     (users.create as ReturnType<typeof vi.fn>).mockResolvedValue(created);
-    const controller = new UsersController(users);
+    const controller = new UsersController(
+      users,
+      createConfig(),
+      createStorage(),
+    );
 
     await expect(controller.create({ email: 'a@b.com' })).resolves.toEqual({
       ...created,
@@ -60,14 +79,20 @@ describe('UsersController', () => {
     );
 
     await expect(
-      new UsersController(users).create({ email: 'a@b.com' }),
+      new UsersController(users, createConfig(), createStorage()).create({
+        email: 'a@b.com',
+      }),
     ).rejects.toBeInstanceOf(ConflictException);
   });
 
   it('delegates remove to the service with the route param id', async () => {
     const users = createUsers();
     (users.delete as ReturnType<typeof vi.fn>).mockResolvedValue(undefined);
-    const controller = new UsersController(users);
+    const controller = new UsersController(
+      users,
+      createConfig(),
+      createStorage(),
+    );
 
     await expect(controller.remove('user-1')).resolves.toBeUndefined();
     expect(users.delete).toHaveBeenCalledExactlyOnceWith('user-1');
@@ -80,7 +105,9 @@ describe('UsersController', () => {
     );
 
     await expect(
-      new UsersController(users).remove('missing'),
+      new UsersController(users, createConfig(), createStorage()).remove(
+        'missing',
+      ),
     ).rejects.toBeInstanceOf(NotFoundException);
   });
 });

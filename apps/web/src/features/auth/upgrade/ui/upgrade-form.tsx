@@ -1,41 +1,45 @@
 'use client';
 
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-// eslint-disable-next-line no-restricted-imports
-import { createClient } from '@/shared/api/supabase/client';
+import { createBrowserClient as createClient } from '@/shared/api';
 import { Button } from '@/shared/ui';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/shared/ui';
 import { Field, FieldContent, FieldLabel } from '@/shared/ui';
 import { Input } from '@/shared/ui';
 
-export function ForgotPasswordForm() {
+export function UpgradeForm() {
+  const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleReset = async (e: React.FormEvent) => {
+  const handleUpgrade = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${location.origin}/reset-password`,
+      // For anonymous users, updating email & password promotes them to a full account
+      const { error } = await supabase.auth.updateUser({
+        email,
+        password,
       });
       if (error) {
         throw error;
       }
-      toast.success('Password reset email sent! Please check your inbox.');
+      toast.success('Account upgraded successfully! Please verify your email.');
+      router.push('/');
+      router.refresh();
     } catch (error: unknown) {
-      toast.error((error as Error).message || 'Failed to send reset email');
+      toast.error((error as Error).message || 'Failed to upgrade account');
     } finally {
       setIsLoading(false);
     }
@@ -44,13 +48,14 @@ export function ForgotPasswordForm() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Reset Password</CardTitle>
+        <CardTitle>Upgrade Account</CardTitle>
         <CardDescription>
-          Enter your email to receive a password reset link.
+          Upgrade your anonymous session to a full account to save your
+          progress.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleReset} className="space-y-4">
+        <form onSubmit={handleUpgrade} className="space-y-4">
           <Field>
             <FieldLabel>Email</FieldLabel>
             <FieldContent>
@@ -64,16 +69,23 @@ export function ForgotPasswordForm() {
               />
             </FieldContent>
           </Field>
+          <Field>
+            <FieldLabel>Password</FieldLabel>
+            <FieldContent>
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={isLoading}
+              />
+            </FieldContent>
+          </Field>
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? 'Sending link...' : 'Send reset link'}
+            {isLoading ? 'Upgrading...' : 'Upgrade Account'}
           </Button>
         </form>
       </CardContent>
-      <CardFooter className="flex justify-center">
-        <p className="text-sm text-muted-foreground">
-          Remember your password? <Link href=""></Link>
-        </p>
-      </CardFooter>
     </Card>
   );
 }

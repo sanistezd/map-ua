@@ -81,6 +81,22 @@ const config = [
       ),
     },
   },
+  {
+    files: ['src/middleware.ts', 'src/app/api/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: deepSliceImportPatterns.filter(p => p !== '@/shared/*/**'),
+              message: 'Import a slice through its public index instead of a deep path.',
+            },
+          ],
+        },
+      ],
+    },
+  },
 ];
 
 export default config;

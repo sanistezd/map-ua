@@ -6,6 +6,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Logger,
   NotFoundException,
   Param,
   ParseUUIDPipe,
@@ -13,12 +14,15 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { API_ERROR_CODES } from '@root/shared/api-error';
 import type { UserDto } from '@root/shared/user';
 
+// removed createClient import
 import { AuthGuard } from '../../auth/auth.guard';
 import type { AuthUser } from '../../auth/auth-user';
 import { CurrentUser } from '../../auth/current-user.decorator';
+import { StorageService } from '../../storage/storage.service';
 import { UsersService } from '../application/users.service';
 import type { User } from '../domain/user';
 import { UserEmailTakenError } from '../domain/user-email-taken.error';
@@ -28,7 +32,13 @@ import { UpdateProfileRequest } from './update-profile.request';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly users: UsersService) {}
+  private readonly logger = new Logger(UsersController.name);
+
+  constructor(
+    private readonly users: UsersService,
+    private readonly config: ConfigService,
+    private readonly storage: StorageService,
+  ) {}
 
   @Get()
   async findAll(): Promise<UserDto[]> {
@@ -70,6 +80,56 @@ export class UsersController {
       throw new NotFoundException({ code: API_ERROR_CODES.notFound });
     }
     return toDto(user);
+  }
+
+  @Delete('me')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async removeMe(@CurrentUser() currentUser: AuthUser): Promise<void> {
+    try {
+      // 1. Delete from DB
+      await this.users.delete(currentUser.id);
+
+      // 2. Delete avatars from S3 (best-effort)
+      try {
+        if (this.storage.isConfigured()) {
+          const avatars = await this.storage.list(`avatars/${currentUser.id}/`);
+          for (const avatar of avatars) {
+            await this.storage.delete(avatar.key);
+          }
+        }
+      } catch (err) {
+        this.logger.error('Failed to delete user avatars', err);
+      }
+
+      // 3. Delete from Supabase Auth
+      const supabaseUrl = this.config.get<string>('SUPABASE_URL');
+      const supabaseServiceKey = this.config.get<string>(
+        'SUPABASE_SERVICE_ROLE_KEY',
+      );
+
+      if (supabaseUrl && supabaseServiceKey) {
+        const response = await fetch(
+          `${supabaseUrl}/auth/v1/admin/users/${currentUser.id}`,
+          {
+            method: 'DELETE',
+            headers: {
+              apikey: supabaseServiceKey,
+              Authorization: `Bearer ${supabaseServiceKey}`,
+            },
+          },
+        );
+        if (!response.ok) {
+          const body = await response.text();
+          this.logger.error(`Failed to delete user from Supabase: ${body}`);
+        }
+      }
+    } catch (error) {
+      if (error instanceof UserNotFoundError) {
+        throw new NotFoundException({ code: API_ERROR_CODES.notFound });
+      }
+      throw error;
+    }
   }
 
   @Delete(':id')

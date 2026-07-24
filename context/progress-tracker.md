@@ -5,33 +5,41 @@ change.
 
 ## Current Phase
 
-- [e.g. Not started / In progress / Complete]
+- Core MVP Refactoring
 
 ## Current Goal
 
-- [What you are building right now]
+- Fixing PR comments and cleaning up FSD architecture. Adding account deletion and Google OAuth.
 
 ## Completed
 
-- None yet.
+- Setup CI dummy env vars
+- Fix initial Supabase environment expectations
+- Fix FSD architecture for auth components (moved to `features/auth`)
+- Implement `delete-account` feature in frontend and backend
+- Add Google SVG icons to auth forms
+- Remove ESLint suppression comments (no-restricted-imports)
+- Fix auth routing with `next-intl` (using `@/i18n/navigation` instead of `next/navigation`)
+- Fix Node.js 20 compatibility issue with `@supabase/supabase-js` by using direct `fetch` in backend for account deletion
+- Fix `SUPABASE_SERVICE_ROLE_KEY` environment requirement crashing API on boot
 
 ## In Progress
 
-- None yet.
+- Next tasks as determined by user
 
 ## Next Up
 
-- [First unit to build]
+- TBD
 
 ## Open Questions
 
-- [Any unresolved product or technical decisions]
+- None at the moment
 
 ## Architecture Decisions
 
-- [Decisions made that affect the system design or
-  data model — include why the decision was made]
+- FSD dictates that forms should live in `features/` layer, not in `app/`. Refactored accordingly.
+- Account deletion implemented in NestJS backend using Supabase Admin client for proper server-side data purging.
 
 ## Session Notes
 
-- [Context needed to resume work in the next session]
+- Completed the PR review fixes as requested by Nikita.

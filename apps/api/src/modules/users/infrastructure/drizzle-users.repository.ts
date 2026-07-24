@@ -1,3 +1,5 @@
+import { randomUUID } from 'node:crypto';
+
 import { Inject, Injectable } from '@nestjs/common';
 import { schema } from '@root/db';
 import { desc, eq } from 'drizzle-orm';
@@ -37,8 +39,6 @@ function isUniqueViolation(error: unknown): boolean {
   }
   return false;
 }
-
-import { randomUUID } from 'node:crypto';
 
 @Injectable()
 export class DrizzleUsersRepository implements UsersRepository {

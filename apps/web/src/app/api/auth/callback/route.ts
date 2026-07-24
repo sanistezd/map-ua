@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-imports */
 import { NextResponse } from 'next/server';
 
 import { createClient } from '@/shared/api/supabase/server';

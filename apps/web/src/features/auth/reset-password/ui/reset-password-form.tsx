@@ -1,11 +1,10 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-// eslint-disable-next-line no-restricted-imports
-import { createClient } from '@/shared/api/supabase/client';
+import { useRouter } from '@/i18n/navigation';
+import { createBrowserClient as createClient } from '@/shared/api';
 import { Button } from '@/shared/ui';
 import {
   Card,

@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-imports */
 import { type NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 

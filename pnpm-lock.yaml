@@ -62,6 +62,9 @@ importers:
       '@root/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@supabase/supabase-js':
+        specifier: ^2.110.8
+        version: 2.110.8
       bullmq:
         specifier: ^5.80.9
         version: 5.80.9

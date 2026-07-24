@@ -1,29 +1,33 @@
 'use client';
 
-/* eslint-disable no-restricted-imports */
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import { apiRequest } from '@/shared/api/client';
-import { createClient } from '@/shared/api/supabase/client';
-import { Button } from '@/shared/ui/button';
+import { useRouter } from '@/i18n/navigation';
+import { apiRequest, createBrowserClient as createClient } from '@/shared/api';
 import {
+  Button,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/shared/ui/card';
-import { Field, FieldContent, FieldLabel } from '@/shared/ui/field';
-import { FileUpload } from '@/shared/ui/file-upload';
-import { Input } from '@/shared/ui/input';
+  Field,
+  FieldContent,
+  FieldLabel,
+  FileUpload,
+  Input,
+} from '@/shared/ui';
 
 export function ProfileForm() {
+  const router = useRouter();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
   const [userId, setUserId] = useState<string>('');
+  const [isDeleting, setIsDeleting] = useState(false);
   const [email, setEmail] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
@@ -40,7 +44,7 @@ export function ProfileForm() {
       setAvatarUrl((user.avatarUrl as string) || '');
     } catch (error: unknown) {
       if ((error as Record<string, unknown>)?.code === 'auth.unauthorized') {
-        window.location.href = '/login';
+        router.push('/login');
       } else {
         console.warn(
           'Failed to load profile:',
@@ -139,9 +143,11 @@ export function ProfileForm() {
             <FieldContent>
               {avatarUrl && (
                 <div className="mb-4">
-                  <img
+                  <Image
                     src={avatarUrl}
                     alt="Avatar"
+                    width={96}
+                    height={96}
                     className="w-24 h-24 rounded-full object-cover border"
                   />
                 </div>
@@ -162,13 +168,49 @@ export function ProfileForm() {
               variant="outline"
               onClick={async () => {
                 await supabase.auth.signOut();
-                window.location.reload();
+                router.push('/login');
               }}
             >
               Sign Out
             </Button>
           </div>
         </form>
+
+        <div className="pt-4 border-t border-border mt-6">
+          <h3 className="text-lg font-medium text-destructive mb-2">
+            Danger Zone
+          </h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Permanently delete your account and all associated data. This action
+            cannot be undone.
+          </p>
+          <Button
+            type="button"
+            variant="destructive"
+            disabled={isDeleting}
+            onClick={async () => {
+              if (
+                confirm(
+                  'Are you sure you want to delete your account? This action cannot be undone.',
+                )
+              ) {
+                setIsDeleting(true);
+                try {
+                  await apiRequest('/users/me', { method: 'DELETE' });
+                  await supabase.auth.signOut();
+                  router.push('/login');
+                } catch (error: unknown) {
+                  toast.error(
+                    (error as Error).message || 'Failed to delete account',
+                  );
+                  setIsDeleting(false);
+                }
+              }
+            }}
+          >
+            {isDeleting ? 'Deleting...' : 'Delete Account'}
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );

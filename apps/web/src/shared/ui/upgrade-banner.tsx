@@ -1,11 +1,9 @@
 'use client';
 
-/* eslint-disable no-restricted-imports */
-
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { createClient } from '@/shared/api/supabase/client';
+import { createBrowserClient as createClient } from '@/shared/api';
 
 import { Button } from './button';
 import {
