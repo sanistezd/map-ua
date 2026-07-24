@@ -89,8 +89,11 @@ const config = [
         {
           patterns: [
             {
-              group: deepSliceImportPatterns.filter(p => p !== '@/shared/*/**'),
-              message: 'Import a slice through its public index instead of a deep path.',
+              group: deepSliceImportPatterns.filter(
+                (p) => p !== '@/shared/*/**',
+              ),
+              message:
+                'Import a slice through its public index instead of a deep path.',
             },
           ],
         },
