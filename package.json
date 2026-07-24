@@ -1,7 +1,7 @@
 {
   "name": "root-monorepo",
   "private": true,
-  "packageManager": "pnpm@11.15.1",
+  "packageManager": "pnpm@9.15.4",
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
@@ -15,8 +15,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "infrastructure:up": "docker compose up -d postgres redis",
-    "db:generate": "pnpm --filter @root/api db:generate",
-    "db:migrate": "pnpm --filter @root/api db:migrate",
+    "db:generate": "pnpm --filter @root/db db:generate",
+    "db:migrate": "pnpm --filter @root/db db:migrate",
     "db:seed": "pnpm --filter @root/api db:seed",
     "db:studio": "pnpm --filter @root/api db:studio",
     "prepare": "husky"

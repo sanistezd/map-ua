@@ -1,4 +1,7 @@
+import { randomUUID } from 'node:crypto';
+
 import { Inject, Injectable } from '@nestjs/common';
+import { schema } from '@root/db';
 import { desc, eq } from 'drizzle-orm';
 
 import { DATABASE } from '@/database/database.constants';
@@ -8,7 +11,7 @@ import type { User } from '../domain/user';
 import { UserEmailTakenError } from '../domain/user-email-taken.error';
 import { UserNotFoundError } from '../domain/user-not-found.error';
 import type { UsersRepository } from '../domain/users.repository';
-import { users } from './persistence/users.schema';
+const users = schema.profiles;
 
 const POSTGRES_UNIQUE_VIOLATION = '23505';
 
@@ -43,7 +46,10 @@ export class DrizzleUsersRepository implements UsersRepository {
 
   async create(email: string): Promise<User> {
     try {
-      const [user] = await this.db.insert(users).values({ email }).returning();
+      const [user] = await this.db
+        .insert(users)
+        .values({ id: randomUUID(), email })
+        .returning();
       if (!user) {
         throw new Error('Failed to create user');
       }
@@ -54,6 +60,55 @@ export class DrizzleUsersRepository implements UsersRepository {
       }
       throw error;
     }
+  }
+
+  async upsertFromAuth(
+    id: string,
+    email: string | null,
+    isAnonymous: boolean,
+  ): Promise<User> {
+    try {
+      const [user] = await this.db
+        .insert(users)
+        .values({ id, email, isAnonymous })
+        .onConflictDoUpdate({
+          target: users.id,
+          set: { email, isAnonymous },
+        })
+        .returning();
+      if (!user) {
+        throw new Error('Failed to upsert user');
+      }
+      return user;
+    } catch (error) {
+      if (isUniqueViolation(error) && email) {
+        // Email already belongs to a different row (stale user id).
+        // Update that existing row to use the new Supabase id.
+        const [existing] = await this.db
+          .update(users)
+          .set({ id, isAnonymous })
+          .where(eq(users.email, email))
+          .returning();
+        if (existing) {
+          return existing;
+        }
+      }
+      throw error;
+    }
+  }
+
+  async findById(id: string): Promise<User | null> {
+    const [user] = await this.db.select().from(users).where(eq(users.id, id));
+    return user || null;
+  }
+
+  async update(id: string, data: Partial<User>): Promise<User | null> {
+    const [user] = await this.db
+      .update(users)
+      .set(data)
+      .where(eq(users.id, id))
+      .returning();
+    return user || null;
   }
 
   findAll(): Promise<User[]> {

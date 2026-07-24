@@ -7,6 +7,7 @@ export const API_ERROR_CODES = {
   internal: 'common.internal',
   unavailable: 'common.unavailable',
   unauthorized: 'auth.unauthorized',
+  forbidden: 'auth.forbidden',
   userEmailTaken: 'user.emailTaken',
 } as const;
 

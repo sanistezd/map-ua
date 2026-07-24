@@ -2,7 +2,12 @@ import { describe, expect, it } from 'vitest';
 
 import { validateEnv } from './env';
 
-const REQUIRED = { DATABASE_URL: 'postgresql://user:pass@localhost:5432/db' };
+const REQUIRED = {
+  DATABASE_URL: 'postgresql://user:pass@localhost:5432/db',
+  SUPABASE_URL: 'https://test.supabase.co',
+  SUPABASE_ANON_KEY: 'test-anon-key',
+  SUPABASE_SERVICE_ROLE_KEY: 'test-service-role-key',
+};
 
 describe('validateEnv', () => {
   it('applies defaults when only the required vars are set', () => {
@@ -12,6 +17,9 @@ describe('validateEnv', () => {
     expect(env.PORT).toBe(4000);
     expect(env.WEB_URL).toBe('http://localhost:3000');
     expect(env.REDIS_URL).toBe('redis://localhost:6379');
+    expect(env.SUPABASE_URL).toBe('https://test.supabase.co');
+    expect(env.SUPABASE_ANON_KEY).toBe('test-anon-key');
+    expect(env.SUPABASE_SERVICE_ROLE_KEY).toBe('test-service-role-key');
     expect(env.THROTTLE_TTL_MS).toBe(60_000);
     expect(env.THROTTLE_LIMIT).toBe(100);
     expect(env.RESEND_API_KEY).toBeUndefined();

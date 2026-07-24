@@ -14,15 +14,27 @@ export class ApiClientError extends Error {
   }
 }
 
+import { createClient as createBrowserClient } from './supabase/client';
+
 export async function apiRequest<T>(
   path: string,
   init?: RequestInit,
 ): Promise<T> {
+  const isServer = typeof window === 'undefined';
+  let token: string | undefined;
+
+  if (!isServer) {
+    const supabase = createBrowserClient();
+    const { data } = await supabase.auth.getSession();
+    token = data.session?.access_token;
+  }
+
   const isFormData = init?.body instanceof FormData;
   const response = await fetch(`${API_URL}${path}`, {
     ...init,
     headers: {
       ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...init?.headers,
     },
   });

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { EmailModule } from '@/modules/email/email.module';
+import { StorageModule } from '@/modules/storage/storage.module';
 
 import { UsersService } from './application/users.service';
 import {
@@ -16,7 +17,7 @@ import { EmailQueueWelcomeEmailAdapter } from './infrastructure/email-queue-welc
 import { UsersController } from './presentation/users.controller';
 
 @Module({
-  imports: [EmailModule],
+  imports: [EmailModule, StorageModule],
   controllers: [UsersController],
   providers: [
     { provide: USERS_REPOSITORY, useClass: DrizzleUsersRepository },

@@ -2,13 +2,14 @@ import { randomUUID } from 'node:crypto';
 
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
 
 import { type Environment, validateEnv } from './config/env';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { ProfileUpsertInterceptor } from './modules/auth/interceptors/profile-upsert.interceptor';
 import { EmailModule } from './modules/email/email.module';
 import { HealthModule } from './modules/health/health.module';
 import { StorageModule } from './modules/storage/storage.module';
@@ -52,6 +53,9 @@ import { QueueModule } from './queue/queue.module';
     StorageModule,
     UsersModule,
   ],
-  providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
+  providers: [
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+    { provide: APP_INTERCEPTOR, useClass: ProfileUpsertInterceptor },
+  ],
 })
 export class AppModule {}

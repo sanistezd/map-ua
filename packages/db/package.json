@@ -1,0 +1,29 @@
+{
+  "name": "@root/db",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./dist/index.js",
+    "./schema": "./dist/schema/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -w -p tsconfig.json",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "lint:fix": "tsc -p tsconfig.json --noEmit",
+    "clean": "rimraf dist .turbo *.tsbuildinfo",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.2",
+    "postgres": "^3.4.9"
+  },
+  "devDependencies": {
+    "@root/typescript-config": "workspace:*",
+    "drizzle-kit": "^0.31.10",
+    "rimraf": "^6.1.3",
+    "typescript": "^6.0.3"
+  }
+}
